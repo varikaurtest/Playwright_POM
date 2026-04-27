@@ -1,0 +1,12 @@
+import { test } from "@playwright/test";
+import BlogPost from "../../PageObjects/PageAction/blogpost";
+import fs from "fs";
+
+test("Automation of table", async ({ page }) => {
+    const blogpostObj = new BlogPost(page);
+    await blogpostObj.visitBlogPost();
+    const tableData = await blogpostObj.getAllTableDataAcrossPages();
+    console.log("Table Data is: " + JSON.stringify(tableData));
+    const csvData = tableData.map(row => `${row.product},${row.price}`).join("\n");
+    fs.writeFileSync("TableData.csv", "Product,Price\n" + csvData);
+})//end test
